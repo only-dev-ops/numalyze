@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title%}
+  Numalyze
+{% endblock %}
+
+{% block jumbotitle %}
+  <h1 class="display-4">Numalyze</h1>
+{% endblock %}
+
+{% block subtext %}
+  Numalyze is a web application written in Python and Flask that hosts and runs some of the important Numerical Analysis algorithms.
+{% endblock %}
+
+{% block content %}
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active disabled"><h4>Roots of a function</h4></a>
+    <a href="{{ url_for('bisection') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Bisection Method</h6></a>
+    <a href="{{ url_for('fixed_point') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Fixed Point Iteration Method</h6> </a>
+    <a href="{{ url_for('newton') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Newton's Method</h6> </a>
+    <a href="{{ url_for('secant') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Secant Method</h6></a>
+    <a href="{{ url_for('muellers') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Müller's Method</h6></a>
+  </div>
+  <br>
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active disabled"><h4>Integration Techniques</h4></a>
+    <a href="{{ url_for('composite_trapezoidal') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Composite Trapezoidal</h6></a>
+    <a href="{{ url_for('composite_simpsons') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Composite Simpson's</h6></a>
+    <a href="{{ url_for('romberg') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Romberg's Integration</h6> </a>
+  </div>
+  <br>
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active disabled"><h4>Acceleration Techniques</h4></a>
+    <a href="{{ url_for('aitkens') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Aitken's Method</h6></a>
+    <a href="{{ url_for('steffensens') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Steffensen's Method</h6> </a>
+  </div>
+  <br>
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active disabled"><h4>Matrix Operations</h4></a>
+    <a href="{{ url_for('rref') }}" class="list-group-item list-group-item-action list-group-item-light"><h6>Row Reduced Echelon Form</h6></a>
+    </div>
+{% endblock %}

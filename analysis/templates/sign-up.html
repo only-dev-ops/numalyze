@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up Page</title>
+  </head>
+  <body>
+    {% if message %}
+      <h1>{{ message }}</h1>
+    {% else %}
+    <h1>Sign-Up</h1>
+    <h3>Please register by providing the following information:</h3>
+    <form action="{{ url_for('get_input') }}" method="POST">
+      <label for="first_name">First Name: </label>
+      <input type="text" name="first_name" required>
+      <label for="last_name">Last Name: </label>
+      <input type="text" name="last_name" required>
+      <label for="email">Email address: </label>
+      <input type="email" name="email" required>
+      <input type="submit" name="submit" value="Submit">
+    </form>
+    {% endif %}
+  </body>
+</html>

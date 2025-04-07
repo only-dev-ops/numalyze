@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title%}
+  Numalyze
+{% endblock %}
+
+{% block jumbotitle %}
+  <h1 class="display-4">How to use?</h1>
+{% endblock %}
+
+{% block subtext %}
+  Parser for handling natural math expressions is in works. As of right now, please use the Pythonic way of inputting mathematical functions. Correct inputs to particular methods are also required. Scenarios listed as below:
+  <ol class="list-group">
+    <li class="list-group-item">For Bisection Method, your endpoints \(a, b\) should be such that \(f(a) < 0\) and \(f(b) > 0\) or vice-versa</li>
+    <li class="list-group-item">For Fixed-Point iteration, when it says Function in terms of \(x\), type the function we'll be iterating over such that \(x_{n+1} = g(x)\)</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <ul class="list-group">
+    <li class="list-group-item">
+      For expressions involving multiplication, let's say \(2x - 3y\), you would type them out as such: <strong>2*x - 3*y</strong>.</li>
+    <li class="list-group-item">For expressions involving exponentiation, for example \(a^2 - b^4\) would be written as: <strong>a**2 - b**4</strong> OR <strong>a^2 - b^4</strong>.</li>
+    <li class="list-group-item">For using trignometric functions, let's say \(2cos(e^t)-sin(3t)\) would be written as <strong>2*cos(e^t)-sin(3*t)</strong>. Again, you can either use <strong>^</strong> or <strong>**</strong> for exponentiation.</li>
+    <li class="list-group-item">You can directly use \(e\) (natural number) or \(\pi\) in your functions. Just make sure to use <strong>pi</strong> in words in your functions, example \(2\pi cos(\pi)\) would be written as <strong>2*pi*cos(pi)</strong>.</li>
+  </ul>
+{% endblock %}

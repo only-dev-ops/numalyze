@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Secant Method
+{% endblock %}
+
+{% block jumbotitle %}
+  Secant Method
+{% endblock %}
+
+{% block subtext %}
+  Similar to Newton-Raphson but removes the need for an explicit derivative. It approximates \(f{\prime}(x)\) using two
+  initial points \(x_0\) and \(x_1\):
+   <p class="lead">Formula: \(x_{n+1} = x_n - f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})} \)</p><a target="_blank" href="https://en.wikipedia.org/wiki/Secant_method">Read more</a> about it on Wikipedia.
+{% endblock %}
+
+{% block content %}
+  {% if data %}
+    {% set last = data['result'][-1] %}
+    <ul class="list-group">
+      <li class="list-group-item active disabled"><h4>Results</h4></li>
+      <li class="list-group-item">Parsed Equation: \(f(x)={{ data['equation'] }}\)</li>
+      <li class="list-group-item">Root within the specified error: {{ last[1] }}</li>
+      <li class="list-group-item">Iterations needed: {{ last[0]-1 }}</li>
+      <li class="list-group-item">Error Reached: {{ last[2] }}</li>
+    </ul>
+    <br><br>
+    <table class="table table-light table-bordered table-sm table-striped text-center">
+      <thead>
+        <tr>
+          <th scope="col">Iteration \(i\)</th>
+          <th scope="col">\(x_i\)</th>
+          <th scope="col">Error \(\xi\)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in data['result'] %}
+          <tr>
+            <td>{{r.0}}</td>
+            <td>{{ "%.15f"|format(r.1) }}</td>
+            <td>{{ "%.15f"|format(r.2) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <form action="{{ url_for('secant') }}" method="post" id="form1">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="function">Function in terms of x</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control form-control-lg" name="function" placeholder="f(x)">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="initial_points">Initial Points</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="initial_points" placeholder="a,b">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="TOL">Desired accuracy</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="TOL" placeholder="1e-4">
+        </div>
+      </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary" value="submit" form="form1">Submit</button>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title%}
+  Numalyze
+{% endblock %}
+
+{% block jumbotitle %}
+  <h1 class="display-4">Composite Simpsons</h1>
+{% endblock %}
+
+{% block subtext %}
+  Simpson's \(1/3\) rule, also simply called Simpson's rule, is a method for numerical integration proposed by Thomas Simpson. It is based upon a quadratic interpolation and is the composite Simpson's \(1/3\) rule evaluated for 
+  n=2. </p><p class="lead"><a target="_blank" href="https://en.wikipedia.org/wiki/Simpson%27s_rule">Read more</a> about it on Wikipedia.</p>
+{% endblock %}
+
+{% block content %}
+  {% if data %}
+    <ul class="list-group">
+      <li class="list-group-item active disabled"><h4>Results</h4></li>
+      <li class="list-group-item">Parsed Equation: \(f(x)={{ data['equation'] }}\)</li>
+      <li class="list-group-item">Trapezoidal estimate: {{ data['result'] }}</li>
+    </ul>
+  {% else %}
+    <form action="{{ url_for('composite_simpsons') }}" method="post" id="form1">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="function">Function in terms of x</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control form-control-lg" name="function" placeholder="e^x">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="llimit">Lower Limit</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="llimit" placeholder="0">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="ulimit">Upper Limit</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="ulimit" placeholder="1">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="n">Number of Panels</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="n" placeholder="10">
+        </div>
+      </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary" value="submit" form="form1">Submit</button>
+  {% endif %}
+{% endblock %}

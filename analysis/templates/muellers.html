@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Müller's Method
+{% endblock %}
+
+{% block jumbotitle %}
+  Müeller's Method
+{% endblock %}
+
+{% block subtext %}
+  A linearly converging method with convergence = 1.84 (faster than Secant, slower than Newton's) to find roots of a continuous function. Similar to Secant method but uses three points to construct a parabola and takes the intersection with the x-axis as the next point. Where Müller's method shines is in finding complex roots.<p class="lead">\(j\) denotes a complex number, instead of \(i\) to avoid ambiguity between a 1, i and l.</p><p class="lead"><a target="_blank" href="https://en.wikipedia.org/wiki/Muller%27s_method">Read more</a> about it on Wikipedia.</p>
+{% endblock %}
+
+{% block content %}
+  {% if data %}
+    {% set last = data['result'][-1] %}
+    <ul class="list-group">
+      <li class="list-group-item active disabled"><h4>Results</h4></li>
+      <li class="list-group-item">Parsed Equation: \(f(x)={{ data['equation'] }}\)</li>
+      <li class="list-group-item">Root within the specified error: {{ last[1] }}</li>
+      <li class="list-group-item">Iterations needed: {{ last[0]-1 }}</li>
+      <li class="list-group-item">Error Reached: {{ last[2] }}</li>
+    </ul>
+    <br><br>
+    <table class="table table-light table-bordered table-sm table-striped text-center">
+      <thead>
+        <tr>
+          <th scope="col">Iteration \(i\)</th>
+          <th scope="col">\(x_i\)</th>
+          <th scope="col">Error \(\xi\)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in data['result'] %}
+          <tr>
+            <td>{{r.0}}</td>
+            {% if r.1|is_complex %}
+              {% if r.1.imag < 0 %}
+                <td>{{ "%.10f - %0.10fj"|format(r.1.real, r.1.imag) }}</td>
+              {% else %}
+                <td>{{ "%.10f + %0.10fj"|format(r.1.real, r.1.imag) }}</td>
+              {% endif %}
+            {% else %}
+              <td>{{ "%.15f"|format(r.1) }}</td>
+            {% endif %}
+            <td>{{ r.2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <form action="{{ url_for('muellers') }}" method="post" id="form1">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="function">Function in terms of x</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control form-control-lg" name="function" placeholder="f(x)">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="initial_points">Initial Points</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="initial_points" placeholder="a,b,c">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="TOL">Desired accuracy</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="TOL" placeholder="1e-4">
+        </div>
+      </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary" value="submit" form="form1">Submit</button>
+  {% endif %}
+{% endblock %}

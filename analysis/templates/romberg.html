@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title%}
+  Numalyze
+{% endblock %}
+
+{% block jumbotitle %}
+  <h1 class="display-4">Romberg's Integration</h1>
+{% endblock %}
+
+{% block subtext %}
+  In numerical analysis, Romberg's method is used to estimate the definite integral \(\int_a^b f(x) dx\)</p><p class="lead"><a target="_blank" href="https://en.wikipedia.org/wiki/Romberg%27s_method">Read more</a> about it on Wikipedia.</p>
+{% endblock %}
+
+{% block content %}
+  {% if data %}
+    <ul class="list-group">
+      <li class="list-group-item active disabled"><h4>Results</h4></li>
+      <li class="list-group-item">Parsed Equation: \(f(x)={{ data['equation'] }}\)</li>
+      <li class="list-group-item">Romberg's estimate: {{ data['result'][-1][-1] }}</li>
+    </ul>
+    <br><br>
+    {% if data['result'] %}
+      <h2 class="display-4">Romberg's Convergence Table</h2>
+      <table class="table table-light table-bordered table-sm table-striped text-center">
+        <thead>
+          <tr>
+            <th scope="col">Iteration</th>
+            <th scope="col">Values in Row</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data['result'] %}
+            <tr>
+              <!-- loop.index0 is zero-based; loop.index is one-based -->
+              <td>{{ loop.index0 }}</td>
+              
+              {% for val in row %}
+                <td>{{ val }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  {% else %}
+    <form action="{{ url_for('romberg') }}" method="post" id="form1">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="function">Function in terms of x</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control form-control-lg" name="function" placeholder="e^x">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="llimit">Lower Limit</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="llimit" placeholder="0">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="ulimit">Upper Limit</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="ulimit" placeholder="1">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label col-form-label-lg" for="n">Iterations</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-lg" name="n" placeholder="10">
+        </div>
+      </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary" value="submit" form="form1">Submit</button>
+  {% endif %}
+{% endblock %}

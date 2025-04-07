@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Numalyze
+{% endblock %}
+
+{% block jumbotitle %}
+  <h1 class="display-4">Row Reduced Echelon Form</h1>
+{% endblock %}
+
+{% block subtext %}
+  Transforms a matrix into row-reduced echelon form by a sequence of pivoting and elimination operations. This is critical
+  for solving linear systems, determining ranks, and other linear algebra tasks.
+{% endblock %}
+
+{% block content %}
+  {% if data %}
+    <!-- If we have data, that means user submitted the form -->
+    <ul class="list-group">
+      <li class="list-group-item active disabled"><h4>Results</h4></li>
+      <li class="list-group-item">
+        <strong>Original Matrix ({{ data['rows'] }} x {{ data['cols'] }}):</strong><br>
+        <table class="table table-light table-bordered table-sm table-striped text-center">
+          <tbody>
+            {% for row in data['original_matrix'] %}
+              <tr>
+                {% for val in row %}
+                  <td>{{ val }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+      <li class="list-group-item">
+        <strong>RREF Matrix:</strong><br>
+        <table class="table table-light table-bordered table-sm table-striped text-center">
+          <tbody>
+            {% for row in data['rref_matrix'] %}
+              <tr>
+                {% for val in row %}
+                  <!-- round to 4 decimals if you like -->
+                  <td>{{ val|round(4) }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+    </ul>
+
+  {% else %}
+    <!-- If no data, show the form to input rows/cols and matrix -->
+
+    {% if error %}
+      <div class="alert alert-danger">
+        <strong>Error:</strong> {{ error }}
+      </div>
+    {% endif %}
+
+    <form action="{{ url_for('rref') }}" method="POST" id="matrixForm">
+      <!-- Step 1: user picks # of rows and columns -->
+      <div class="form-group row">
+        <label for="rows" class="col-sm-3 col-form-label col-form-label-lg">Number of Rows</label>
+        <div class="col-sm-2">
+          <input type="number" min="1" class="form-control form-control-lg" id="rows" name="rows" value="3" oninput="buildMatrixInputs()">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="cols" class="col-sm-3 col-form-label col-form-label-lg">Number of Columns</label>
+        <div class="col-sm-2">
+          <input type="number" min="1" class="form-control form-control-lg" id="cols" name="cols" value="3" oninput="buildMatrixInputs()">
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Step 2: container that will hold the matrix input fields -->
+      <div id="matrix-container" style="margin-bottom: 20px;"></div>
+
+      <button type="submit" class="btn btn-primary btn-lg">Compute RREF</button>
+    </form>
+  {% endif %}
+{% endblock %}
+
+{% block scriptimport %}
+<script>
+  function buildMatrixInputs() {
+    // 1) read rows/cols from the input boxes
+    const rowVal = document.getElementById("rows").value;
+    const colVal = document.getElementById("cols").value;
+    const numRows = parseInt(rowVal) || 0;
+    const numCols = parseInt(colVal) || 0;
+
+    // 2) get the matrix container
+    const container = document.getElementById("matrix-container");
+    container.innerHTML = ""; // clear previous inputs
+
+    // 3) dynamically create an input grid
+    for (let r = 0; r < numRows; r++) {
+      // rowDiv for each row
+      const rowDiv = document.createElement("div");
+      rowDiv.classList.add("form-row", "mb-1"); // bootstrap classes if you want spacing
+
+      for (let c = 0; c < numCols; c++) {
+        // create a column div
+        const colDiv = document.createElement("div");
+        colDiv.classList.add("col");
+        
+        // create an input for matrix cell [r,c]
+        const input = document.createElement("input");
+        input.type = "number";
+        input.step = "any";
+        input.classList.add("form-control");
+        input.name = `matrix-${r}-${c}`; // e.g., matrix-0-0, matrix-0-1, ...
+        input.placeholder = `M[${r},${c}]`;
+
+        colDiv.appendChild(input);
+        rowDiv.appendChild(colDiv);
+      }
+      container.appendChild(rowDiv);
+    }
+  }
+
+  // Build the inputs on first load, with default 3x3
+  buildMatrixInputs();
+</script>
+{% endblock %}
